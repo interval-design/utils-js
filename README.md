@@ -3,7 +3,7 @@
 `package.json`文件中增加如下:
 ``` json
 dependencies:{
-  'itv-utils':""
+  'itv-utils':"https://github.com/interval-design/utils-js.git"
 }
 ```
 随后 `npm install` 就好
