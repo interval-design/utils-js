@@ -1,0 +1,19 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "常用工具包",
+  "main": "utils.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interval-design/utils-js.git"
+  },
+  "author": "Pony",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/interval-design/utils-js/issues"
+  },
+  "homepage": "https://github.com/interval-design/utils-js#readme"
+}
