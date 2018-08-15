@@ -4,12 +4,12 @@
  * ------------------------------------------------------------------
  */
 
-let itv = {
-	Date: {
+function Date() {
+	return {
 		/** 当前时间到传入时间的倒计时
-		 * @param time
-		 * @return {String}
-		 */
+	 * @param time
+	 * @return {String}
+	 */
 		countDown(time) {
 			// 处理传入时间，兼容iOS
 			let _time = (() => {
@@ -49,9 +49,9 @@ let itv = {
 			}
 		},
 		/** 日期格式化
-		 * @param {String} time 
-		 * @param {String} format 
-		 */
+	 * @param {String} time 
+	 * @param {String} format 
+	 */
 		format(time, format) {
 			if (!time) {
 				return '-';
@@ -77,8 +77,8 @@ let itv = {
 			return time_str;
 		},
 		/** 距离当前时间
-		 * @param {String} time 
-		 */
+	 * @param {String} time 
+	 */
 		formTheCurrentTime(time) {
 			// 处理传入时间，兼容iOS
 			let _time = (() => {
@@ -127,8 +127,10 @@ let itv = {
 				return `${formatObj.y}/${formatObj.m}/${formatObj.d} ${formatObj.h}:${formatObj.i}`;
 			}
 		}
-	},
-	String: {
+	};
+}
+function String() {
+	return {
 		/** 获得字符串实际长度，中文2，英文1
 		* @param str
 		* @returns {number}
@@ -151,10 +153,9 @@ let itv = {
 		random(len) {
 			len = len || 16;
 			let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
-			let maxPos = chars.length;
 			let pwd = '';
 			for (let i = 0; i < len; i++) {
-				pwd += chars.charAt(Math.floor(Math.random() * maxPos));
+				pwd += chars.charAt(Math.floor(Math.random() * chars.length));
 			}
 			return pwd;
 		},
@@ -165,7 +166,7 @@ let itv = {
 		cut(str, cutLen) {
 			let str_length = this.realLength(str); // 字符串真实长度
 			if (str_length >= cutLen) {
-				return str.substring(1, cutLen + 1) + '...';
+				return str.substring(0, cutLen) + '...';
 			} else {
 				return str;
 			}
@@ -192,12 +193,14 @@ let itv = {
 			});
 			return uuid;
 		}
-	},
-	Cookies: {
+	};
+}
+function Cookies() {
+	return {
 		/** 设置Cookie
-		 * @param {String} name 
-		 * @param {String} value 
-		 * @param {*} date 
+		 * @param {String} name
+		 * @param {String} value
+		 * @param {*} date
 		 */
 		set(name, value, date) {
 			let _date = new Date();
@@ -205,10 +208,11 @@ let itv = {
 			document.cookie = name + '=' + value + ';expires=' + _date;
 		},
 		/** 获取Cookie
-		 * @param {String} name 
+		 * @param {String} name
 		 */
 		get(name) {
-			let arr = document.cookie.split(';'),arr2;
+			let arr = document.cookie.split(';'),
+				arr2;
 			for (let i = 0; i < arr.length; i++) {
 				arr2 = arr[i].split('=');
 				if (arr2[0] == name) {
@@ -218,13 +222,15 @@ let itv = {
 			return '';
 		},
 		/** 移除Cookie
-		 * @param {String} name 
+		 * @param {String} name
 		 */
 		remove(name) {
 			this.setCookie(name, 1, -1);
 		}
-	},
-	Verify: {
+	};
+}
+function Verify() {
+	return {
 		/** 判断参数是否是其中之一
 		 * @param val
 		 * @param arr
@@ -292,7 +298,14 @@ let itv = {
 				}
 			};
 		}
-	}
-};
+	};
+}
 
-export default itv;
+class PDo {
+	constructor() {
+		this.Date = Date();
+		this.String = String();
+		this.Cookies = Cookies();
+		this.Verify = Verify();
+	}
+}
