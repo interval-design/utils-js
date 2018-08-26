@@ -56,7 +56,7 @@ function Date() {
 			if (!time) {
 				return '-';
 			}
-			const _format = format || '{y}/{m}/{d} {h}:{i}:{s}';
+			const _format = format || 'y/m/d h:i:s';
 			let date = new Date(time);
 			const formatObj = {
 				y: date.getFullYear(),
@@ -67,7 +67,7 @@ function Date() {
 				s: date.getSeconds(),
 				a: date.getDay()
 			};
-			const time_str = _format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
+			const time_str = _format.replace(/(y|m|d|h|i|s)/g, (result, key) => {
 				let value = formatObj[key];
 				if (result.length > 0 && value < 10) {
 					value = '0' + value;
@@ -192,8 +192,18 @@ function String() {
 				return (c == 'x' ? r : (r & 0x7) | 0x8).toString(16);
 			});
 			return uuid;
+		},
+		/** 货币格式化
+		 * @param {*} price
+		 * @param {*} fixed
+		 */
+		priceFormat(price,fixed = 2) {
+		if (price) {
+			return '￥' + (price/100).toFixed(fixed);
+		}else {
+			return '￥0';
 		}
-	};
+	}
 }
 function Cookies() {
 	return {
