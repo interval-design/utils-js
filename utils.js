@@ -56,18 +56,17 @@ function Date() {
 			if (!time) {
 				return '-';
 			}
-			const _format = format || 'y/m/d h:i:s';
-			let date = new Date(time);
-			const formatObj = {
+			let _format = format || 'y/m/d h:i:s';
+			let date = time ? new Date(time.split('-').join('/').split('T').join(' ')) : new Date();
+			let formatObj = {
 				y: date.getFullYear(),
 				m: date.getMonth() + 1,
 				d: date.getDate(),
 				h: date.getHours(),
 				i: date.getMinutes(),
 				s: date.getSeconds(),
-				a: date.getDay()
 			};
-			const time_str = _format.replace(/(y|m|d|h|i|s)/g, (result, key) => {
+			let time_str = _format.replace(/(y|m|d|h|i|s)/g, (result, key) => {
 				let value = formatObj[key];
 				if (result.length > 0 && value < 10) {
 					value = '0' + value;
