@@ -204,7 +204,6 @@ function String() {
         return '￥0';
       }
     }
-  }
 }
 function Cookies() {
 	return {
