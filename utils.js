@@ -320,4 +320,4 @@ class PDo {
 		this.Verify = Verify();
 	}
 }
-export default PDo;
+export default new PDo;
