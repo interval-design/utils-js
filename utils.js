@@ -185,12 +185,11 @@ function String() {
     /** 生成 uuid */
     generateUUID() {
       let d = new Date().getTime();
-      let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) = > {
+      let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
         let r = ((d + Math.random() * 16) % 16) | 0;
       d = Math.floor(d / 16);
       return (c == 'x' ? r : (r & 0x7) | 0x8).toString(16);
-    })
-      ;
+    	}) ;
       return uuid;
     },
     /** 货币格式化
@@ -203,7 +202,8 @@ function String() {
       } else {
         return '￥0';
       }
-    }
+		}
+	}
 }
 function Cookies() {
 	return {
