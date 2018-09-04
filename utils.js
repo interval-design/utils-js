@@ -129,80 +129,82 @@ function Date() {
 	};
 }
 function String() {
-	return {
-		/** 获得字符串实际长度，中文2，英文1
-		* @param str
-		* @returns {number}
-		*/
-		realLength(str) {
-			let _realLen = 0,
-				_len = str.length,
-				_charCode = -1;
-			for (let i = 0; i < _len; i++) {
-				_charCode = str.charCodeAt(i);
-				if (_charCode >= 0 && _charCode <= 128) _realLen += 1;
-				else _realLen += 2;
-			}
-			return _realLen;
-		},
-		/** 生成随机字符串
-		 * @param len
-		 * @returns {string}
-		 */
-		random(len) {
-			len = len || 16;
-			let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
-			let pwd = '';
-			for (let i = 0; i < len; i++) {
-				pwd += chars.charAt(Math.floor(Math.random() * chars.length));
-			}
-			return pwd;
-		},
-		/** 截取字符串
-		 * @param {String} str 
-		 * @param {String} cutLen 
-		 */
-		cut(str, cutLen) {
-			let str_length = this.realLength(str); // 字符串真实长度
-			if (str_length >= cutLen) {
-				return str.substring(0, cutLen) + '...';
-			} else {
-				return str;
-			}
-		},
-		/** html转txt 并可以截取字符串长度
-		 * @param {*} value 
-		 * @param {*} cutLen 
-		 */
-		stripHtml(value, cutLen) {
-			let _cutLen = cutLen || false;
-			let _result = value.replace(/<(?:.|\n)*?>/gm, '');
-			if (_cutLen) {
-				this.cut(_result, _cutLen);
-			}
-			return _result;
-		},
-		/** 生成 uuid */
-		generateUUID() {
-			let d = new Date().getTime();
-			let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-				let r = ((d + Math.random() * 16) % 16) | 0;
-				d = Math.floor(d / 16);
-				return (c == 'x' ? r : (r & 0x7) | 0x8).toString(16);
-			});
-			return uuid;
-		},
-		/** 货币格式化
-		 * @param {*} price
-		 * @param {*} fixed
-		 */
-		priceFormat(price,fixed = 2) {
-		if (price) {
-			return '￥' + (price/100).toFixed(fixed);
-		}else {
-			return '￥0';
-		}
-	}
+  return {
+    /** 获得字符串实际长度，中文2，英文1
+     * @param str
+     * @returns {number}
+     */
+    realLength(str) {
+      let _realLen = 0,
+        _len = str.length,
+        _charCode = -1;
+      for (let i = 0; i < _len; i++) {
+        _charCode = str.charCodeAt(i);
+        if (_charCode >= 0 && _charCode <= 128) _realLen += 1;
+        else _realLen += 2;
+      }
+      return _realLen;
+    },
+    /** 生成随机字符串
+     * @param len
+     * @returns {string}
+     */
+    random(len) {
+      len = len || 16;
+      let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+      let pwd = '';
+      for (let i = 0; i < len; i++) {
+        pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return pwd;
+    },
+    /** 截取字符串
+     * @param {String} str
+     * @param {String} cutLen
+     */
+    cut(str, cutLen) {
+      let str_length = this.realLength(str); // 字符串真实长度
+      if (str_length >= cutLen) {
+        return str.substring(0, cutLen) + '...';
+      } else {
+        return str;
+      }
+    },
+    /** html转txt 并可以截取字符串长度
+     * @param {*} value
+     * @param {*} cutLen
+     */
+    stripHtml(value, cutLen) {
+      let _cutLen = cutLen || false;
+      let _result = value.replace(/<(?:.|\n)*?>/gm, '');
+      if (_cutLen) {
+        this.cut(_result, _cutLen);
+      }
+      return _result;
+    },
+    /** 生成 uuid */
+    generateUUID() {
+      let d = new Date().getTime();
+      let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) = > {
+        let r = ((d + Math.random() * 16) % 16) | 0;
+      d = Math.floor(d / 16);
+      return (c == 'x' ? r : (r & 0x7) | 0x8).toString(16);
+    })
+      ;
+      return uuid;
+    },
+    /** 货币格式化
+     * @param {*} price
+     * @param {*} fixed
+     */
+    priceFormat(price, fixed = 2) {
+      if (price) {
+        return '￥' + (price / 100).toFixed(fixed);
+      } else {
+        return '￥0';
+      }
+    }
+  }
 }
 function Cookies() {
 	return {
@@ -318,5 +320,4 @@ class PDo {
 		this.Verify = Verify();
 	}
 }
-
 export default PDo;
