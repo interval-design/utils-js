@@ -12,7 +12,7 @@ npm install
 ```js
  // 全局引入
  import PDo from 'PDo'
- Vue.prototype.$PDo = new PDo();
+ Vue.prototype.$PDo = PDo;
 
  // 单个方法注册为过滤器
  Vue.filter('dateFormat', this.$PDo.Date.format);
