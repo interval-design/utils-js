@@ -160,7 +160,7 @@ const String = {
      * @param {String} cutLen
      */
     cut(str, cutLen) {
-      let str_length = realLength(str); // 字符串真实长度
+      let str_length = String.realLength(str); // 字符串真实长度
       if (str_length >= cutLen) {
         return str.substring(0, cutLen) + '...';
       } else {
@@ -175,7 +175,7 @@ const String = {
       let _cutLen = cutLen || false;
       let _result = value.replace(/<(?:.|\n)*?>/gm, '');
       if (_cutLen) {
-        this.cut(_result, _cutLen);
+        String.cut(_result, _cutLen);
       }
       return _result;
     },
@@ -230,7 +230,7 @@ const Cookies = {
 		 * @param {String} name
 		 */
 		remove(name) {
-			this.setCookie(name, 1, -1);
+			Cookies.setCookie(name, 1, -1);
 		}
 }
 const Verify = {
