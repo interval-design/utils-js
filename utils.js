@@ -4,133 +4,130 @@
  * ------------------------------------------------------------------
  */
 
-function Date() {
-	return {
-		/** 当前时间到传入时间的倒计时
+const Date = {
+/** 当前时间到传入时间的倒计时
 	 * @param time
 	 * @return {String}
 	 */
-		countDown(time) {
-			// 处理传入时间，兼容iOS
-			let _time = (() => {
-				let _strTime = new Date(time);
-				if (_strTime == 'Invalid Date') {
-					time = time.replace(/T/g, ' ');
-					time = time.replace(/-/g, '/');
-					_strTime = new Date(time);
-				}
-				return _strTime;
-			})();
-			let _countDown = '00:00:00';
-			let _d = 0,
-				_h = 0,
-				_i = 0,
-				_s = 0;
-			// 补零
-			let addZero = (num) => (num < 10 ? '0' : '') + num;
-			let _now = new Date();
-			let _diff = _time - _now;
-			if (_diff <= 0) {
-				_countDown = '00:00:00';
-				return 'STOP';
+	countDown(time) {
+		// 处理传入时间，兼容iOS
+		let _time = (() => {
+			let _strTime = new Date(time);
+			if (_strTime == 'Invalid Date') {
+				time = time.replace(/T/g, ' ');
+				time = time.replace(/-/g, '/');
+				_strTime = new Date(time);
+			}
+			return _strTime;
+		})();
+		let _countDown = '00:00:00';
+		let _d = 0,
+			_h = 0,
+			_i = 0,
+			_s = 0;
+		// 补零
+		let addZero = (num) => (num < 10 ? '0' : '') + num;
+		let _now = new Date();
+		let _diff = _time - _now;
+		if (_diff <= 0) {
+			_countDown = '00:00:00';
+			return 'STOP';
+		} else {
+			_d = Math.floor(_diff / 1000 / 3600 / 24);
+			_h = addZero(Math.floor((_diff / 1000 / 60 / 60) % 24));
+			_i = addZero(Math.floor((_diff / 1000 / 60) % 60));
+			_s = addZero(Math.floor((_diff / 1000) % 60));
+			if (_d > 0) {
+				_countDown = `${_d}天${_h}:${_i}:${_s}`;
+			} else if (_h === 0) {
+				_countDown = `${_i}:${_s}`;
 			} else {
-				_d = Math.floor(_diff / 1000 / 3600 / 24);
-				_h = addZero(Math.floor((_diff / 1000 / 60 / 60) % 24));
-				_i = addZero(Math.floor((_diff / 1000 / 60) % 60));
-				_s = addZero(Math.floor((_diff / 1000) % 60));
-				if (_d > 0) {
-					_countDown = `${_d}天${_h}:${_i}:${_s}`;
-				} else if (_h === 0) {
-					_countDown = `${_i}:${_s}`;
-				} else {
-					_countDown = `${_h}:${_i}:${_s}`;
-				}
-				return _countDown;
+				_countDown = `${_h}:${_i}:${_s}`;
 			}
-		},
-		/** 日期格式化
-	 * @param {String} time 
-	 * @param {String} format 
-	 */
-		format(time, format) {
-			if (!time) {
-				return '-';
-			}
-			let _format = format || 'y/m/d h:i:s';
-			let date = time ? new Date(time.split('-').join('/').split('T').join(' ')) : new Date();
-			let formatObj = {
-				y: date.getFullYear(),
-				m: date.getMonth() + 1,
-				d: date.getDate(),
-				h: date.getHours(),
-				i: date.getMinutes(),
-				s: date.getSeconds(),
-			};
-			let time_str = _format.replace(/(y|m|d|h|i|s)/g, (result, key) => {
-				let value = formatObj[key];
-				if (result.length > 0 && value < 10) {
-					value = '0' + value;
-				}
-				return value || 0;
-			});
-			return time_str;
-		},
-		/** 距离当前时间
-	 * @param {String} time 
-	 */
-		formTheCurrentTime(time) {
-			// 处理传入时间，兼容iOS
-			let _time = (() => {
-				let _strTime = new Date(time);
-				if (_strTime == 'Invalid Date') {
-					time = time.replace(/T/g, ' ');
-					time = time.replace(/-/g, '/');
-					_strTime = new Date(time);
-				}
-				return _strTime;
-			})();
-			// 补零
-			let addZero = (num) => (num < 10 ? '0' : '') + num;
-			let _now = new Date();
-			let _diff = _now - _time; // 相差
-			let formatObj = {
-				y: _time.getFullYear(),
-				m: _time.getMonth() + 1,
-				d: _time.getDate(),
-				h: addZero(_time.getHours()),
-				i: addZero(_time.getMinutes())
-			};
-			let diffObj = {
-				d: Math.floor(_diff / 1000 / 3600 / 24),
-				h: addZero(Math.floor((_diff / 1000 / 60 / 60) % 24)),
-				i: addZero(Math.floor((_diff / 1000 / 60) % 60))
-			};
-			if (diffObj.d === 0) {
-				if (diffObj.h < 1) {
-					return diffObj.i + '分钟前';
-				}
-				if (diffObj.h >= 1) {
-					return diffObj.h + '小时' + diffObj.i + '分钟前';
-				}
-				return;
-			}
-			if (diffObj.d > 0) {
-				if (diffObj.d === 1) {
-					return '昨天';
-				} else if (diffObj.d === 2) {
-					return '前天';
-				}
-				return;
-			}
-			if (diffObj.d > 2) {
-				return `${formatObj.y}/${formatObj.m}/${formatObj.d} ${formatObj.h}:${formatObj.i}`;
-			}
+			return _countDown;
 		}
-	};
+	},
+	/** 日期格式化
+ * @param {String} time 
+ * @param {String} format 
+ */
+	format(time, format) {
+		if (!time) {
+			return '-';
+		}
+		let _format = format || 'y/m/d h:i:s';
+		let date = time ? new Date(time.split('-').join('/').split('T').join(' ')) : new Date();
+		let formatObj = {
+			y: date.getFullYear(),
+			m: date.getMonth() + 1,
+			d: date.getDate(),
+			h: date.getHours(),
+			i: date.getMinutes(),
+			s: date.getSeconds(),
+		};
+		let time_str = _format.replace(/(y|m|d|h|i|s)/g, (result, key) => {
+			let value = formatObj[key];
+			if (result.length > 0 && value < 10) {
+				value = '0' + value;
+			}
+			return value || 0;
+		});
+		return time_str;
+	},
+	/** 距离当前时间
+ * @param {String} time 
+ */
+	formTheCurrentTime(time) {
+		// 处理传入时间，兼容iOS
+		let _time = (() => {
+			let _strTime = new Date(time);
+			if (_strTime == 'Invalid Date') {
+				time = time.replace(/T/g, ' ');
+				time = time.replace(/-/g, '/');
+				_strTime = new Date(time);
+			}
+			return _strTime;
+		})();
+		// 补零
+		let addZero = (num) => (num < 10 ? '0' : '') + num;
+		let _now = new Date();
+		let _diff = _now - _time; // 相差
+		let formatObj = {
+			y: _time.getFullYear(),
+			m: _time.getMonth() + 1,
+			d: _time.getDate(),
+			h: addZero(_time.getHours()),
+			i: addZero(_time.getMinutes())
+		};
+		let diffObj = {
+			d: Math.floor(_diff / 1000 / 3600 / 24),
+			h: addZero(Math.floor((_diff / 1000 / 60 / 60) % 24)),
+			i: addZero(Math.floor((_diff / 1000 / 60) % 60))
+		};
+		if (diffObj.d === 0) {
+			if (diffObj.h < 1) {
+				return diffObj.i + '分钟前';
+			}
+			if (diffObj.h >= 1) {
+				return diffObj.h + '小时' + diffObj.i + '分钟前';
+			}
+			return;
+		}
+		if (diffObj.d > 0) {
+			if (diffObj.d === 1) {
+				return '昨天';
+			} else if (diffObj.d === 2) {
+				return '前天';
+			}
+			return;
+		}
+		if (diffObj.d > 2) {
+			return `${formatObj.y}/${formatObj.m}/${formatObj.d} ${formatObj.h}:${formatObj.i}`;
+		}
+	}
 }
-function String() {
-  return {
-    /** 获得字符串实际长度，中文2，英文1
+const String = {
+   /** 获得字符串实际长度，中文2，英文1
      * @param str
      * @returns {number}
      */
@@ -163,7 +160,7 @@ function String() {
      * @param {String} cutLen
      */
     cut(str, cutLen) {
-      let str_length = this.realLength(str); // 字符串真实长度
+      let str_length = realLength(str); // 字符串真实长度
       if (str_length >= cutLen) {
         return str.substring(0, cutLen) + '...';
       } else {
@@ -203,11 +200,9 @@ function String() {
         return '￥0';
       }
 		}
-	}
 }
-function Cookies() {
-	return {
-		/** 设置Cookie
+const Cookies = {
+	/** 设置Cookie
 		 * @param {String} name
 		 * @param {String} value
 		 * @param {*} date
@@ -237,10 +232,8 @@ function Cookies() {
 		remove(name) {
 			this.setCookie(name, 1, -1);
 		}
-	};
 }
-function Verify() {
-	return {
+const Verify = {
 		/** 判断参数是否是其中之一
 		 * @param val
 		 * @param arr
@@ -308,15 +301,14 @@ function Verify() {
 				}
 			};
 		}
-	};
 }
 
 class PDo {
 	constructor() {
-		this.Date = Date();
-		this.String = String();
-		this.Cookies = Cookies();
-		this.Verify = Verify();
+		this.Date = Date;
+		this.String = String;
+		this.Cookies = Cookies;
+		this.Verify = Verify;
 	}
 }
 export default new PDo;
