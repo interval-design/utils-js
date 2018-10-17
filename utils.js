@@ -4,7 +4,7 @@
  * ------------------------------------------------------------------
  */
 
-const Date = {
+const Time = {
 /** 当前时间到传入时间的倒计时
 	 * @param time
 	 * @return {String}
@@ -126,7 +126,7 @@ const Date = {
 		}
 	}
 }
-const String = {
+const Char = {
    /** 获得字符串实际长度，中文2，英文1
      * @param str
      * @returns {number}
@@ -160,7 +160,7 @@ const String = {
      * @param {String} cutLen
      */
     cut(str, cutLen) {
-      let str_length = String.realLength(str); // 字符串真实长度
+      let str_length = Char.realLength(str); // 字符串真实长度
       if (str_length >= cutLen) {
         return str.substring(0, cutLen) + '...';
       } else {
@@ -175,7 +175,7 @@ const String = {
       let _cutLen = cutLen || false;
       let _result = value.replace(/<(?:.|\n)*?>/gm, '');
       if (_cutLen) {
-        String.cut(_result, _cutLen);
+        Char.cut(_result, _cutLen);
       }
       return _result;
     },
@@ -305,8 +305,8 @@ const Verify = {
 
 class PDo {
 	constructor() {
-		this.Date = Date;
-		this.String = String;
+		this.Date = Time;
+		this.String = Char;
 		this.Cookies = Cookies;
 		this.Verify = Verify;
 	}
