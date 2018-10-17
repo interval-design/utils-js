@@ -4,219 +4,205 @@
  * ------------------------------------------------------------------
  */
 
-function Date() {
-	return {
-		/** 当前时间到传入时间的倒计时
+const Date = {
+/** 当前时间到传入时间的倒计时
 	 * @param time
 	 * @return {String}
 	 */
-		countDown(time) {
-			if(!time){
-				return '-';
+	countDown(time) {
+		// 处理传入时间，兼容iOS
+		let _time = (() => {
+			let _strTime = new Date(time);
+			if (_strTime == 'Invalid Date') {
+				time = time.replace(/T/g, ' ');
+				time = time.replace(/-/g, '/');
+				_strTime = new Date(time);
 			}
-			// 处理传入时间，兼容iOS
-			let _time = (() => {
-				let _strTime = new Date(time);
-				if (_strTime == 'Invalid Date') {
-					time = time.replace(/T/g, ' ');
-					time = time.replace(/-/g, '/');
-					_strTime = new Date(time);
-				}
-				return _strTime;
-			})();
-			let _countDown = '00:00:00';
-			let _d = 0,
-				_h = 0,
-				_i = 0,
-				_s = 0;
-			// 补零
-			let addZero = (num) => (num < 10 ? '0' : '') + num;
-			let _now = new Date();
-			let _diff = _time - _now;
-			if (_diff <= 0) {
-				_countDown = '00:00:00';
-				return 'STOP';
+			return _strTime;
+		})();
+		let _countDown = '00:00:00';
+		let _d = 0,
+			_h = 0,
+			_i = 0,
+			_s = 0;
+		// 补零
+		let addZero = (num) => (num < 10 ? '0' : '') + num;
+		let _now = new Date();
+		let _diff = _time - _now;
+		if (_diff <= 0) {
+			_countDown = '00:00:00';
+			return 'STOP';
+		} else {
+			_d = Math.floor(_diff / 1000 / 3600 / 24);
+			_h = addZero(Math.floor((_diff / 1000 / 60 / 60) % 24));
+			_i = addZero(Math.floor((_diff / 1000 / 60) % 60));
+			_s = addZero(Math.floor((_diff / 1000) % 60));
+			if (_d > 0) {
+				_countDown = `${_d}天${_h}:${_i}:${_s}`;
+			} else if (_h === 0) {
+				_countDown = `${_i}:${_s}`;
 			} else {
-				_d = Math.floor(_diff / 1000 / 3600 / 24);
-				_h = addZero(Math.floor((_diff / 1000 / 60 / 60) % 24));
-				_i = addZero(Math.floor((_diff / 1000 / 60) % 60));
-				_s = addZero(Math.floor((_diff / 1000) % 60));
-				if (_d > 0) {
-					_countDown = `${_d}天${_h}:${_i}:${_s}`;
-				} else if (_h === 0) {
-					_countDown = `${_i}:${_s}`;
-				} else {
-					_countDown = `${_h}:${_i}:${_s}`;
-				}
-				return _countDown;
+				_countDown = `${_h}:${_i}:${_s}`;
 			}
-		},
-		/** 日期格式化
-	 * @param {String} time 
-	 * @param {String} format 
-	 */
-		format(time, format) {
-			if (!time) {
-				return '-';
-			}
-			let _format = format || 'y/m/d h:i:s';
-			let _date = time ? new Date(time.split('-').join('/').split('T').join(' ')) : new Date();
-			let formatObj = {
-				y: _date.getFullYear(),
-				m: _date.getMonth() + 1,
-				d: _date.getDate(),
-				h: _date.getHours(),
-				i: _date.getMinutes(),
-				s: _date.getSeconds(),
-			};
-			let time_str = _format.replace(/(y|m|d|h|i|s)/g, (result, key) => {
-				let value = formatObj[key];
-				if (result.length > 0 && value < 10) {
-					value = '0' + value;
-				}
-				return value || 0;
-			});
-			return time_str;
-		},
-		/** 距离当前时间
-	 * @param {String} time 
-	 */
-		formTheCurrentTime(time) {
-			if(!time){
-				return '-';
-			}
-			// 处理传入时间，兼容iOS
-			let _time = (() => {
-				let _strTime = new Date(time);
-				if (_strTime == 'Invalid Date') {
-					time = time.replace(/T/g, ' ');
-					time = time.replace(/-/g, '/');
-					_strTime = new Date(time);
-				}
-				return _strTime;
-			})();
-			// 补零
-			let addZero = (num) => (num < 10 ? '0' : '') + num;
-			let _now = new Date();
-			let _diff = _now - _time; // 相差
-			let formatObj = {
-				y: _time.getFullYear(),
-				m: _time.getMonth() + 1,
-				d: _time.getDate(),
-				h: addZero(_time.getHours()),
-				i: addZero(_time.getMinutes())
-			};
-			let diffObj = {
-				d: Math.floor(_diff / 1000 / 3600 / 24),
-				h: addZero(Math.floor((_diff / 1000 / 60 / 60) % 24)),
-				i: addZero(Math.floor((_diff / 1000 / 60) % 60))
-			};
-			if (diffObj.d === 0) {
-				if (diffObj.h < 1) {
-					if(diffObj.i < 10){
-						return diffObj.i.split('')[1] + '分钟前';
-					} else {
-						return diffObj.i + '分钟前';
-					}
-				}
-				if (diffObj.h >= 1) {
-					return diffObj.h + '小时' + diffObj.i + '分钟前';
-				}
-				return;
-			}
-			if (diffObj.d > 0) {
-				if (diffObj.d === 1) {
-					return '昨天';
-				} else if (diffObj.d === 2) {
-					return '前天';
-				}
-				return;
-			}
-			if (diffObj.d > 2) {
-				return `${formatObj.y}/${formatObj.m}/${formatObj.d} ${formatObj.h}:${formatObj.i}`;
-			}
+			return _countDown;
 		}
-	};
-}
-function String() {
-	return {
-		/** 获得字符串实际长度，中文2，英文1
-		* @param str
-		* @returns {number}
-		*/
-		realLength(str) {
-			let _realLen = 0,
-				_len = str.length,
-				_charCode = -1;
-			for (let i = 0; i < _len; i++) {
-				_charCode = str.charCodeAt(i);
-				if (_charCode >= 0 && _charCode <= 128) _realLen += 1;
-				else _realLen += 2;
+	},
+	/** 日期格式化
+ * @param {String} time 
+ * @param {String} format 
+ */
+	format(time, format) {
+		if (!time) {
+			return '-';
+		}
+		let _format = format || 'y/m/d h:i:s';
+		let _date = time ? new Date(time.split('-').join('/').split('T').join(' ')) : new Date();
+		let formatObj = {
+			y: _date.getFullYear(),
+			m: _date.getMonth() + 1,
+			d: _date.getDate(),
+			h: _date.getHours(),
+			i: _date.getMinutes(),
+			s: _date.getSeconds(),
+		};
+		let time_str = _format.replace(/(y|m|d|h|i|s)/g, (result, key) => {
+			let value = formatObj[key];
+			if (result.length > 0 && value < 10) {
+				value = '0' + value;
 			}
-			return _realLen;
-		},
-		/** 生成随机字符串
-		 * @param len
-		 * @returns {string}
-		 */
-		random(len) {
-			len = len || 16;
-			let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
-			let pwd = '';
-			for (let i = 0; i < len; i++) {
-				pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+			return value || 0;
+		});
+		return time_str;
+	},
+	/** 距离当前时间
+ * @param {String} time 
+ */
+	formTheCurrentTime(time) {
+		// 处理传入时间，兼容iOS
+		let _time = (() => {
+			let _strTime = new Date(time);
+			if (_strTime == 'Invalid Date') {
+				time = time.replace(/T/g, ' ');
+				time = time.replace(/-/g, '/');
+				_strTime = new Date(time);
 			}
-			return pwd;
-		},
-		/** 截取字符串
-		 * @param {String} str 
-		 * @param {String} cutLen 
-		 */
-		cut(str, cutLen) {
-			let str_length = this.realLength(str); // 字符串真实长度
-			if (str_length >= cutLen) {
-				return str.substring(0, cutLen) + '...';
-			} else {
-				return str;
+			return _strTime;
+		})();
+		// 补零
+		let addZero = (num) => (num < 10 ? '0' : '') + num;
+		let _now = new Date();
+		let _diff = _now - _time; // 相差
+		let formatObj = {
+			y: _time.getFullYear(),
+			m: _time.getMonth() + 1,
+			d: _time.getDate(),
+			h: addZero(_time.getHours()),
+			i: addZero(_time.getMinutes())
+		};
+		let diffObj = {
+			d: Math.floor(_diff / 1000 / 3600 / 24),
+			h: addZero(Math.floor((_diff / 1000 / 60 / 60) % 24)),
+			i: addZero(Math.floor((_diff / 1000 / 60) % 60))
+		};
+		if (diffObj.d === 0) {
+			if (diffObj.h < 1) {
+				return diffObj.i + '分钟前';
 			}
-		},
-		/** html转txt 并可以截取字符串长度
-		 * @param {*} value 
-		 * @param {*} cutLen 
-		 */
-		stripHtml(value, cutLen) {
-			let _cutLen = cutLen || false;
-			let _result = value.replace(/<(?:.|\n)*?>/gm, '');
-			if (_cutLen) {
-				this.cut(_result, _cutLen);
+			if (diffObj.h >= 1) {
+				return diffObj.h + '小时' + diffObj.i + '分钟前';
 			}
-			return _result;
-		},
-		/** 生成 uuid */
-		generateUUID() {
-			let d = new Date().getTime();
-			let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-				let r = ((d + Math.random() * 16) % 16) | 0;
-				d = Math.floor(d / 16);
-				return (c == 'x' ? r : (r & 0x7) | 0x8).toString(16);
-			});
-			return uuid;
-		},
-		/** 货币格式化
-		 * @param {*} price
-		 * @param {*} fixed
-		 */
-		priceFormat(price,fixed = 2) {
-		if (price) {
-			return '￥' + (price/100).toFixed(fixed);
-		}else {
-			return '￥0';
+			return;
+		}
+		if (diffObj.d > 0) {
+			if (diffObj.d === 1) {
+				return '昨天';
+			} else if (diffObj.d === 2) {
+				return '前天';
+			}
+			return;
+		}
+		if (diffObj.d > 2) {
+			return `${formatObj.y}/${formatObj.m}/${formatObj.d} ${formatObj.h}:${formatObj.i}`;
 		}
 	}
 }
-function Cookies() {
-	return {
-		/** 设置Cookie
+const String = {
+   /** 获得字符串实际长度，中文2，英文1
+     * @param str
+     * @returns {number}
+     */
+    realLength(str) {
+      let _realLen = 0,
+        _len = str.length,
+        _charCode = -1;
+      for (let i = 0; i < _len; i++) {
+        _charCode = str.charCodeAt(i);
+        if (_charCode >= 0 && _charCode <= 128) _realLen += 1;
+        else _realLen += 2;
+      }
+      return _realLen;
+    },
+    /** 生成随机字符串
+     * @param len
+     * @returns {string}
+     */
+    random(len) {
+      len = len || 16;
+      let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+      let pwd = '';
+      for (let i = 0; i < len; i++) {
+        pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return pwd;
+    },
+    /** 截取字符串
+     * @param {String} str
+     * @param {String} cutLen
+     */
+    cut(str, cutLen) {
+      let str_length = String.realLength(str); // 字符串真实长度
+      if (str_length >= cutLen) {
+        return str.substring(0, cutLen) + '...';
+      } else {
+        return str;
+      }
+    },
+    /** html转txt 并可以截取字符串长度
+     * @param {*} value
+     * @param {*} cutLen
+     */
+    stripHtml(value, cutLen) {
+      let _cutLen = cutLen || false;
+      let _result = value.replace(/<(?:.|\n)*?>/gm, '');
+      if (_cutLen) {
+        String.cut(_result, _cutLen);
+      }
+      return _result;
+    },
+    /** 生成 uuid */
+    generateUUID() {
+      let d = new Date().getTime();
+      let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        let r = ((d + Math.random() * 16) % 16) | 0;
+      d = Math.floor(d / 16);
+      return (c == 'x' ? r : (r & 0x7) | 0x8).toString(16);
+    	}) ;
+      return uuid;
+    },
+    /** 货币格式化
+     * @param {*} price
+     * @param {*} fixed
+     */
+    priceFormat(price, fixed = 2) {
+      if (price) {
+        return '￥' + (price / 100).toFixed(fixed);
+      } else {
+        return '￥0';
+      }
+		}
+}
+const Cookies = {
+	/** 设置Cookie
 		 * @param {String} name
 		 * @param {String} value
 		 * @param {*} date
@@ -244,12 +230,10 @@ function Cookies() {
 		 * @param {String} name
 		 */
 		remove(name) {
-			this.setCookie(name, 1, -1);
+			Cookies.setCookie(name, 1, -1);
 		}
-	};
 }
-function Verify() {
-	return {
+const Verify = {
 		/** 判断参数是否是其中之一
 		 * @param val
 		 * @param arr
@@ -317,16 +301,14 @@ function Verify() {
 				}
 			};
 		}
-	};
 }
 
 class PDo {
 	constructor() {
-		this.Date = Date();
-		this.String = String();
-		this.Cookies = Cookies();
-		this.Verify = Verify();
+		this.Date = Date;
+		this.String = String;
+		this.Cookies = Cookies;
+		this.Verify = Verify;
 	}
 }
-
-export default PDo;
+export default new PDo;
