@@ -11,6 +11,9 @@ function Date() {
 	 * @return {String}
 	 */
 		countDown(time) {
+			if(!time){
+				return '-';
+			}
 			// 处理传入时间，兼容iOS
 			let _time = (() => {
 				let _strTime = new Date(time);
@@ -57,14 +60,14 @@ function Date() {
 				return '-';
 			}
 			let _format = format || 'y/m/d h:i:s';
-			let date = time ? new Date(time.split('-').join('/').split('T').join(' ')) : new Date();
+			let _date = time ? new Date(time.split('-').join('/').split('T').join(' ')) : new Date();
 			let formatObj = {
-				y: date.getFullYear(),
-				m: date.getMonth() + 1,
-				d: date.getDate(),
-				h: date.getHours(),
-				i: date.getMinutes(),
-				s: date.getSeconds(),
+				y: _date.getFullYear(),
+				m: _date.getMonth() + 1,
+				d: _date.getDate(),
+				h: _date.getHours(),
+				i: _date.getMinutes(),
+				s: _date.getSeconds(),
 			};
 			let time_str = _format.replace(/(y|m|d|h|i|s)/g, (result, key) => {
 				let value = formatObj[key];
@@ -79,6 +82,9 @@ function Date() {
 	 * @param {String} time 
 	 */
 		formTheCurrentTime(time) {
+			if(!time){
+				return '-';
+			}
 			// 处理传入时间，兼容iOS
 			let _time = (() => {
 				let _strTime = new Date(time);
@@ -107,7 +113,11 @@ function Date() {
 			};
 			if (diffObj.d === 0) {
 				if (diffObj.h < 1) {
-					return diffObj.i + '分钟前';
+					if(diffObj.i < 10){
+						return diffObj.i.split('')[1] + '分钟前';
+					} else {
+						return diffObj.i + '分钟前';
+					}
 				}
 				if (diffObj.h >= 1) {
 					return diffObj.h + '小时' + diffObj.i + '分钟前';
