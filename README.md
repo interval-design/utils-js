@@ -85,25 +85,39 @@ this.$PDo.String.generateUUID()
 ```
 
 ### 3. Cookies
+该方法搬运自 [tiny-cookie]('https://github.com/Alex1990/tiny-cookie/tree/f20831f9c74cec38d57ed022c8ec3946af7ea472')
+只选取了3个常用功能
+
+设置一个名称为key的 cookie，使用`encodeURIComponent`编码。options参数是一个对象，其属性可以是合法的 cookie 属性值，比如`path`（默认：根路径/）、`domain`、`expires/max-age`、`samesite`或`secure`。（备注：如果`secure`的值为一个真值，比如true，就会被设置，否则不会被设置）
 ``` js
 /** 设置Cookie
- * @param {String} name 
+ * @param {String} key 
  * @param {String} value 
- * @param {*} date 
+ * @param {*} options 
  */
-this.$PDo.Cookies.set(name, value, date)
+this.$PDo.Cookies.set(key, value, options)
 ```
+`expires`属性值可以是一个`Date`对象，一个可被`Date.parse()`解析的日期字符串，一个整数（单位：天），或者一个带时间后缀的数值字符串。
+
+| 单位后缀     | 含义            |
+| ----------- | -------------- |
+| Y           | 年             |
+| M           | 月             |
+| D           | 天             |
+| h           | 日             |
+| m           | 分             |
+| s           | 秒             |
 ``` js
 /** 获取Cookie
- * @param {String} name 
+ * @param {String} key 
  */
-this.$PDo.Cookies.get(name)
+this.$PDo.Cookies.get(key)
 ```
 ``` js
 /** 移除Cookie
- * @param {String} name 
+ * @param {String} key 
  */
-this.$PDo.Cookies.remove(name)
+this.$PDo.Cookies.remove(key)
 ```
 
 ### 4. Verify

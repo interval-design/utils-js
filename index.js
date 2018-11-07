@@ -3,6 +3,7 @@
  * 工具函数封装
  * ------------------------------------------------------------------
  */
+import { escapeRe, convert } from './util';
 
 const Time = {
 /** 当前时间到传入时间的倒计时
@@ -202,35 +203,50 @@ const Char = {
 		}
 }
 const Cookies = {
-	/** 设置Cookie
-		 * @param {String} name
-		 * @param {String} value
-		 * @param {*} date
+		/**
+		 * 设置cookies
+		 * @param {*} key 
+		 * @param {*} value 
+		 * @param {*} encoder 
+		 * @param {*} options 
 		 */
-		set(name, value, date) {
-			let _date = new Date();
-			_date.setDate(_date.getDate() + date);
-			document.cookie = name + '=' + value + ';expires=' + _date;
-		},
-		/** 获取Cookie
-		 * @param {String} name
-		 */
-		get(name) {
-			let arr = document.cookie.split(';'),
-				arr2;
-			for (let i = 0; i < arr.length; i++) {
-				arr2 = arr[i].split('=');
-				if (arr2[0] == name) {
-					return arr2[1];
-				}
+		set(key, value, encoder = encodeURIComponent, options) {
+			if (typeof encoder === 'object' && encoder !== null) {
+				options = encoder;
+				encoder = encodeURIComponent;
 			}
-			return '';
+			const attrsStr = convert(options || {});
+			const valueStr = typeof encoder === 'function' ? encoder(value) : value;
+			const newCookie = `${key}=${valueStr}${attrsStr}`;
+			document.cookie = newCookie;
 		},
-		/** 移除Cookie
-		 * @param {String} name
+
+		/** 获取Cookie
+		 * @param {String} key
 		 */
-		remove(name) {
-			Cookies.setCookie(name, 1, -1);
+		get(key,decoder = decodeURIComponent) {
+			if ((typeof key !== 'string') || !key) {
+				return null;
+			}
+			const reKey = new RegExp(`(?:^|; )${escapeRe(key)}(?:=([^;]*))?(?:;|$)`);
+			const match = reKey.exec(document.cookie);
+			if (match === null) {
+				return null;
+			}
+			return typeof decoder === 'function' ? decoder(match[1]) : match[1];
+		},
+
+		/** 移除Cookie
+		 * @param {String} key
+		 * @param {Object} options
+		 */
+		remove(key,options) {
+			const opts = { expires: -1 };
+			if (options && options.domain) {
+				opts.domain = options.domain;
+			}
+
+			return Cookies.set(key, 'a', opts);
 		}
 }
 const Verify = {
