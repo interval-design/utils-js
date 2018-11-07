@@ -1,10 +1,14 @@
 # 常用工具封装
-如果发现bug请及时提出……
+如果发现bug请及时提出
 ## 使用方法
 `package.json`文件中增加如下:
 ``` json
 dependencies:{
   'PDo':"git+https://github.com/interval-design/utils-js.git"
+}
+或 
+dependencies:{
+  'PDo':"git+https://github.com/PonyC/PDo.git"
 }
 
 npm install
@@ -85,7 +89,7 @@ this.$PDo.String.generateUUID()
 ```
 
 ### 3. Cookies
-该方法搬运自 [tiny-cookie]('https://github.com/Alex1990/tiny-cookie/tree/f20831f9c74cec38d57ed022c8ec3946af7ea472')
+该方法搬运自 [tiny-cookie](https://github.com/Alex1990/tiny-cookie/tree/f20831f9c74cec38d57ed022c8ec3946af7ea472)
 只选取了3个常用功能
 
 设置一个名称为key的 cookie，使用`encodeURIComponent`编码。options参数是一个对象，其属性可以是合法的 cookie 属性值，比如`path`（默认：根路径/）、`domain`、`expires/max-age`、`samesite`或`secure`。（备注：如果`secure`的值为一个真值，比如true，就会被设置，否则不会被设置）
