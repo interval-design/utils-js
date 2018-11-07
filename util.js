@@ -1,3 +1,7 @@
+function hasOwn(obj, key) {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+}
+
 // Escape special characters.
 function escapeRe(str) {
   return str.replace(/[.*+?^$|[\](){}\\-]/g, '\\$&')
@@ -36,6 +40,7 @@ function convert(opts) {
 }
 
 export {
+  hasOwn,
   escapeRe,
   convert
 };
