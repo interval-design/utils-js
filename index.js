@@ -207,17 +207,20 @@ const Char = {
 		 * @param {*} value 
 		 */
 		copy(elId,value){
-			const btn = document.querySelector(elId)
-			btn.addEventListener('click', () => {
-				const input = document.createElement('input')
-				input.setAttribute('readonly', 'readonly')
-				input.setAttribute('value', value)
-				document.body.appendChild(input)
-				input.setSelectionRange(0, 9999)
-				if (document.execCommand('copy')) {
-					document.execCommand('copy')
-				}
-				document.body.removeChild(input)
+			return new Promise((resolve, reject) =>{
+				const btn = document.querySelector(elId)
+				btn.addEventListener('click', () => {
+					const input = document.createElement('input')
+					input.setAttribute('readonly', 'readonly')
+					input.setAttribute('value', value)
+					document.body.appendChild(input)
+					input.setSelectionRange(0, 9999)
+					if (document.execCommand('copy')) {
+						document.execCommand('copy')
+						resolve(value);
+					}
+					document.body.removeChild(input)
+				})
 			})
 		}
 }
