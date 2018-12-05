@@ -87,14 +87,6 @@ this.$PDo.String.generateUUID()
  */
  this.$PDo.String.priceFormat(price,fixed)
 ```
-``` js
-/** 复制
- * @returns {String}
- * @param {*} elId 
- * @param {*} value
- */
- this.$PDo.String.copy('#copy','Hello World')
-```
 
 ### 3. Cookies
 该方法搬运自 [tiny-cookie](https://github.com/Alex1990/tiny-cookie/tree/f20831f9c74cec38d57ed022c8ec3946af7ea472)
