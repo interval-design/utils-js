@@ -130,17 +130,28 @@ const Time = {
 	 * 时间演算
 	 * 获取当前日期 + - 前后的日期
 	 * @param {*} addDayCount  -- 需要推移的日期 正数为加 负数为减
+	 * @param {*} format -- 格式
 	 */
-	getTimeCalculation(addDayCount){
+	getTimeCalculation(addDayCount,format){
 		let _date = new Date()
+		let _format = format || 'y/m/d h:i:s';
 		_date.setDate(_date.getDate() + addDayCount) //获取AddDayCount天后的日期
-		let y = _date.getFullYear()
-		let m =
-			_date.getMonth() + 1 < 10
-				? '0' + (_date.getMonth() + 1)
-				: _date.getMonth() + 1
-		let d = _date.getDate() < 10 ? '0' + _date.getDate() : _date.getDate()
-		return y + '/' + m + '/' + d
+		let formatObj = {
+			y: _date.getFullYear(),
+			m: _date.getMonth() + 1,
+			d: _date.getDate(),
+			h: _date.getHours(),
+			i: _date.getMinutes(),
+			s: _date.getSeconds(),
+		};
+		let time_str = _format.replace(/(y|m|d|h|i|s)/g, (result, key) => {
+			let value = formatObj[key];
+			if (result.length > 0 && value < 10) {
+				value = '0' + value;
+			}
+			return value || 0;
+		});
+		return time_str;
 	}
 }
 const Char = {

@@ -48,6 +48,14 @@ this.$PDo.Date.format(time,format)
 */
 this.$PDo.Date.formTheCurrentTime(time)
 ```
+``` js
+/**
+ * 时间演算
+ * 获取当前日期 + - 前后的日期
+ * @param {*} addDayCount  -- 需要推移的日期 正数为加 负数为减
+ */
+this.$PDo.Date.getTimeCalculation(-7) // 7天天前日期
+```
 
 ### 2. String
 ``` js
