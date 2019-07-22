@@ -6,7 +6,7 @@
 import { escapeRe, convert } from './util';
 
 const Time = {
-/** 当前时间到传入时间的倒计时
+	/** 当前时间到传入时间的倒计时
 	 * @param time
 	 * @return {String}
 	 */
@@ -125,6 +125,22 @@ const Time = {
 		if (diffObj.d > 2) {
 			return `${formatObj.y}/${formatObj.m}/${formatObj.d} ${formatObj.h}:${formatObj.i}`;
 		}
+	},
+	/**
+	 * 时间演算
+	 * 获取当前日期 + - 前后的日期
+	 * @param {*} addDayCount  -- 需要推移的日期 正数为加 负数为减
+	 */
+	getTimeCalculation(addDayCount){
+		let _date = new Date()
+		_date.setDate(_date.getDate() + addDayCount) //获取AddDayCount天后的日期
+		let y = _date.getFullYear()
+		let m =
+			_date.getMonth() + 1 < 10
+				? '0' + (_date.getMonth() + 1)
+				: _date.getMonth() + 1
+		let d = _date.getDate() < 10 ? '0' + _date.getDate() : _date.getDate()
+		return y + '/' + m + '/' + d
 	}
 }
 const Char = {
