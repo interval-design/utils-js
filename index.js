@@ -105,14 +105,8 @@ const Time = {
 			h: addZero(Math.floor((_diff / 1000 / 60 / 60) % 24)),
 			i: addZero(Math.floor((_diff / 1000 / 60) % 60))
 		};
-		if (diffObj.d === 0) {
-			if (diffObj.h < 1) {
-				return diffObj.i + '分钟前';
-			}
-			if (diffObj.h >= 1) {
-				return diffObj.h + '小时' + diffObj.i + '分钟前';
-			}
-			return;
+		if (diffObj.d > 2) {
+			return `${formatObj.y}/${formatObj.m}/${formatObj.d} ${formatObj.h}:${formatObj.i}`;
 		}
 		if (diffObj.d > 0) {
 			if (diffObj.d === 1) {
@@ -122,8 +116,13 @@ const Time = {
 			}
 			return;
 		}
-		if (diffObj.d > 2) {
-			return `${formatObj.y}/${formatObj.m}/${formatObj.d} ${formatObj.h}:${formatObj.i}`;
+		if (diffObj.d === 0) {
+			if (diffObj.h < 1) {
+				return diffObj.i + '分钟前';
+			}
+			if (diffObj.h >= 1) {
+				return diffObj.h + '小时' + diffObj.i + '分钟前';
+			}
 		}
 	},
 	/**
