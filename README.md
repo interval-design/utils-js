@@ -155,3 +155,26 @@ this.$PDo.Verify.istype(o, type)
  */
 this.$PDo.Verify.isScrollToPageBottom((()=>{}))
 ```
+
+### 5. Utils
+``` js
+/**
+	 * 节流函数(在时间长度为delay的一段时间内，至少触发事件一次)
+	 * 语法：throttle(delay[, noTrailing], callback[, debounceMode])
+	 * @param {Number} delay 延迟的时间
+	 * @param {Boolean} noTrailing 最后一次是否执行（不能与 debounceMode 同时设置）
+	 * @param {Function} callback 回调函数
+	 * @param {Boolean} debounceMode 是否一开始就执行（不能与 noTrailing 同时设置） 给debounce函数专用
+	 */
+this.$PDo.Utils.throttle(delay[, noTrailing], callback[, debounceMode])
+```
+``` js
+/**
+	 * 防抖函数（多次触发，在最后一次触发的时间点往后delay毫秒内，只执行一次回调，可以在开始时执行，也可以在结束时执行）
+	 * 语法：debounce(time[, atBegin], callback)
+	 * @param {Number} delay 延迟时间
+	 * @param {Boolean} atBegin 是否一开始就执行回调
+	 * @param {Function} callback 回调函数
+	 */
+this.$PDo.Utils.语法：debounce(time[, atBegin], callback)
+```

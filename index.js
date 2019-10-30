@@ -5,6 +5,7 @@
  */
 import { escapeRe, convert } from './util';
 
+// 实践类
 const Time = {
 	/** 当前时间到传入时间的倒计时
 	 * @param time
@@ -153,6 +154,7 @@ const Time = {
 		return time_str;
 	}
 }
+// 文本类
 const Char = {
    /** 获得字符串实际长度，中文2，英文1
      * @param str
@@ -228,6 +230,7 @@ const Char = {
       }
 		}
 }
+// Cookies类
 const Cookies = {
 		/**
 		 * 设置cookies
@@ -275,6 +278,7 @@ const Cookies = {
 			return Cookies.set(key, 'a', opts);
 		}
 }
+// 验证类
 const Verify = {
 		/** 判断参数是否是其中之一
 		 * @param val
@@ -344,6 +348,77 @@ const Verify = {
 			};
 		}
 }
+// 工具类
+const Utils = {
+	/**
+	 * 节流函数(在时间长度为delay的一段时间内，至少触发事件一次)
+	 * 语法：throttle(delay[, noTrailing], callback[, debounceMode])
+	 * @param {Number} delay 延迟的时间
+	 * @param {Boolean} noTrailing 最后一次是否执行（不能与 debounceMode 同时设置）
+	 * @param {Function} callback 回调函数
+	 * @param {Boolean} debounceMode 是否一开始就执行（不能与 noTrailing 同时设置） 给debounce函数专用
+	 */
+	throttle(delay, noTrailing, callback, debounceMode){
+		let timeoutID, // TAG 防抖不断
+			lastExec = 0 // TAG 上一次执行的时间戳
+
+		if (typeof noTrailing !== 'boolean') {
+			debounceMode = callback
+			callback = noTrailing
+			noTrailing = undefined
+		}
+
+		function wrapper() {
+			// eslint-disable-next-line no-invalid-this
+			let self = this,
+				elapsed = Number(new Date()) - lastExec,
+				args = arguments
+
+			function exec() {
+				lastExec = Number(new Date())
+				callback.apply(self, args)
+			}
+
+			function clear() {
+				timeoutID = undefined
+			}
+
+			if (debounceMode && !timeoutID) {
+				// TAG 防抖，（直接执行回调，并更新时间戳）
+				exec()
+			}
+			if (timeoutID) {
+				clearTimeout(timeoutID)
+			}
+
+			if (debounceMode === undefined && elapsed > delay) {
+				// TAG 节流，本次操作距离上次的操作，时间上大于delay，则可以执行，（第一次会直接执行）
+				exec()
+			} else if (noTrailing !== true) {
+				// TAG 防抖，noTrailing 始终是 undefined，timeoutID(clear/exec, delay)
+				// TAG 节流，这么使用 throttle(delay[, noTrailing], callback) ，当本次操作距离上次的操作，时间上小于delay，设置 delay - elapsed 毫秒后执行
+				timeoutID = setTimeout(
+					debounceMode ? clear : exec,
+					debounceMode === undefined ? delay - elapsed : delay // TAG 这个参数是节流和防抖不同的关键所在
+				)
+			}
+		}
+
+		return wrapper
+	},
+
+	/**
+	 * 防抖函数（多次触发，在最后一次触发的时间点往后delay毫秒内，只执行一次回调，可以在开始时执行，也可以在结束时执行）
+	 * 语法：debounce(time[, atBegin], callback)
+	 * @param {Number} delay 延迟时间
+	 * @param {Boolean} atBegin 是否一开始就执行回调
+	 * @param {Function} callback 回调函数
+	 */
+	debounce(delay, atBegin, callback) {
+		// eslint-disable-next-line prettier/prettier
+		return callback === undefined ? throttle(delay, atBegin, false) : throttle(delay, callback, atBegin !== false)
+	}
+}
 
 class PDo {
 	constructor() {
@@ -351,6 +426,7 @@ class PDo {
 		this.String = Char;
 		this.Cookies = Cookies;
 		this.Verify = Verify;
+		this.Utils = Utils;
 	}
 }
 export default new PDo;
