@@ -176,5 +176,13 @@ this.$PDo.Utils.throttle(delay[, noTrailing], callback[, debounceMode])
 	 * @param {Boolean} atBegin 是否一开始就执行回调
 	 * @param {Function} callback 回调函数
 	 */
-this.$PDo.Utils.语法：debounce(time[, atBegin], callback)
+this.$PDo.Utils.debounce(time[, atBegin], callback)
+```
+```js
+	/**
+	下载base64格式文件
+	* @param {*} b64 - b64文件编码
+	* @param {String} file_name - 命名的名称
+	*/
+	this.$PDo.Utils.downloadBase64Img(b64,'文件名')
 ```

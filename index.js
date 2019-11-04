@@ -417,6 +417,21 @@ const Utils = {
 	debounce(delay, atBegin, callback) {
 		// eslint-disable-next-line prettier/prettier
 		return callback === undefined ? throttle(delay, atBegin, false) : throttle(delay, callback, atBegin !== false)
+	},
+	
+	/**
+	下载base64格式文件
+	* @param {*} b64 - b64文件编码
+	* @param {String} file_name - 命名的名称
+	*/
+	downloadBase64Img(b64, file_name){
+		// 创建隐藏的可下载链接
+		let eleLink = document.createElement('a')
+
+		eleLink.download = file_name
+		eleLink.style.display = 'none'
+		eleLink.href = b64
+		eleLink.click()
 	}
 }
 
