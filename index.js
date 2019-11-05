@@ -416,7 +416,7 @@ const Utils = {
 	 */
 	debounce(delay, atBegin, callback) {
 		// eslint-disable-next-line prettier/prettier
-		return callback === undefined ? throttle(delay, atBegin, false) : throttle(delay, callback, atBegin !== false)
+		return callback === undefined ? this.throttle(delay, atBegin, false) : this.throttle(delay, callback, atBegin !== false)
 	},
 	
 	/**
