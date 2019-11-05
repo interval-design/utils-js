@@ -440,9 +440,6 @@ const Utils = {
 	 */
 	copy({ targetId = null, content = '', success = Function }) {
 		const btn = document.querySelector(targetId)
-
-		console.log(btn)
-
 		btn.addEventListener('click', () => {
 			const input = document.createElement('input')
 
