@@ -446,7 +446,10 @@ const Utils = {
 			input.setAttribute('readonly', 'readonly')
 			input.setAttribute('value', content)
 			document.body.appendChild(input)
+			input.select()
+			// 手机上要用这个方法
 			input.setSelectionRange(0, 9999)
+			
 			if (document.execCommand('copy')) {
 				document.execCommand('copy')
 				success()
