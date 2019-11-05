@@ -440,7 +440,7 @@ const Utils = {
 	 */
 	copy({ targetId = null, content = '', success = Function }) {
 		const btn = document.querySelector(targetId)
-		btn.addEventListener('click', () => {
+		let listener = btn.addEventListener('click', () => {
 			const input = document.createElement('input')
 
 			input.setAttribute('readonly', 'readonly')
@@ -449,13 +449,14 @@ const Utils = {
 			input.select()
 			// 手机上要用这个方法
 			input.setSelectionRange(0, 9999)
-			
+
 			if (document.execCommand('copy')) {
 				document.execCommand('copy')
 				success()
 			}
 			document.body.removeChild(input)
 		})
+		btn.removeEventListener('click',listener,true)
   }
 }
 
