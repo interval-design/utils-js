@@ -432,7 +432,31 @@ const Utils = {
 		eleLink.style.display = 'none'
 		eleLink.href = b64
 		eleLink.click()
-	}
+	},
+
+	/**
+	 * 复制
+	 * @param {*} param0 
+	 */
+	copy({ targetId = null, content = '', success = Function }) {
+		const btn = document.querySelector(targetId)
+
+		console.log(btn)
+
+		btn.addEventListener('click', () => {
+			const input = document.createElement('input')
+
+			input.setAttribute('readonly', 'readonly')
+			input.setAttribute('value', content)
+			document.body.appendChild(input)
+			input.setSelectionRange(0, 9999)
+			if (document.execCommand('copy')) {
+				document.execCommand('copy')
+				success()
+			}
+			document.body.removeChild(input)
+		})
+  }
 }
 
 class PDo {
