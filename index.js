@@ -418,7 +418,7 @@ const Utils = {
 
 			if (document.execCommand('copy')) {
 				document.execCommand('copy')
-				success
+				success()
 			}
 			document.body.removeChild(input)
 		})
