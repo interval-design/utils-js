@@ -406,7 +406,7 @@ const Utils = {
 	 */
 	copy({ targetId = null, content = '', success = Function }) {
 		const btn = document.querySelector(targetId)
-		let listener = btn.addEventListener('click', () => {
+		let copy = () =>{
 			const input = document.createElement('input')
 
 			input.setAttribute('readonly', 'readonly')
@@ -421,8 +421,9 @@ const Utils = {
 				success()
 			}
 			document.body.removeChild(input)
-		})
-		btn.removeEventListener('click',listener,true)
+		}
+		btn.addEventListener('click',copy())
+		btn.removeEventListener('click',copy,true)
   }
 }
 
