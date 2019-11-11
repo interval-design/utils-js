@@ -404,26 +404,21 @@ const Utils = {
 	 * 复制
 	 * @param {*} param0 
 	 */
-	copy({ targetId = null, content = '', success = Function }) {
-		const btn = document.querySelector(targetId)
-		let copy = () =>{
-			const input = document.createElement('input')
+	copy({content = '', success = Function }) {
+		const input = document.createElement('input')
 
-			input.setAttribute('readonly', 'readonly')
-			input.setAttribute('value', content)
-			document.body.appendChild(input)
-			input.select()
-			// 手机上要用这个方法
-			input.setSelectionRange(0, 9999)
+		input.setAttribute('readonly', 'readonly')
+		input.setAttribute('value', content)
+		document.body.appendChild(input)
+		input.select()
+		// 手机上要用这个方法
+		input.setSelectionRange(0, 9999)
 
-			if (document.execCommand('copy')) {
-				document.execCommand('copy')
-				success()
-			}
-			document.body.removeChild(input)
+		if (document.execCommand('copy')) {
+			document.execCommand('copy')
+			success()
 		}
-		btn.addEventListener('click',copy())
-		btn.removeEventListener('click',copy,true)
+		document.body.removeChild(input)
   }
 }
 
