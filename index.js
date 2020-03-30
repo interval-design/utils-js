@@ -390,35 +390,33 @@ const Utils = {
 	* @param {*} b64 - b64文件编码
 	* @param {String} file_name - 命名的名称
 	*/
-	downloadBase64Img(b64, file_name){
-    async downloadBase64Img(b64, file_name){
-      const userAgent = navigator.userAgent
-      const myBrowser = () => {
-        if (userAgent.indexOf('Trident') > -1) {
-          return 'IE'
-        } // 判断是否IE浏览器
-        if (userAgent.indexOf('Edge') > -1) {
-          return 'Edge'
-        }
-        return ''
+  async downloadBase64Img(b64, file_name){
+    const userAgent = navigator.userAgent
+    const myBrowser = () => {
+      if (userAgent.indexOf('Trident') > -1) {
+        return 'IE'
+      } // 判断是否IE浏览器
+      if (userAgent.indexOf('Edge') > -1) {
+        return 'Edge'
       }
-      const eleLink = document.createElement('a')
+      return ''
+    }
+    const eleLink = document.createElement('a')
 
-      eleLink.download = file_name
-      eleLink.style.display = 'none'
-      if (myBrowser() === 'IE' || myBrowser() === 'Edge') {
-        eleLink.href = '#'
-        await fetch(b64).then((res) =>
-          res.blob().then((blob) => {
-            window.navigator.msSaveOrOpenBlob(blob, file_name)
-          })
-        )
-      } else {
-        eleLink.href = b64
-        eleLink.click()
-      }
-    },
-	},
+    eleLink.download = file_name
+    eleLink.style.display = 'none'
+    if (myBrowser() === 'IE' || myBrowser() === 'Edge') {
+      eleLink.href = '#'
+      await fetch(b64).then((res) =>
+        res.blob().then((blob) => {
+          window.navigator.msSaveOrOpenBlob(blob, file_name)
+        })
+      )
+    } else {
+      eleLink.href = b64
+      eleLink.click()
+    }
+  },
 
 	/**
 	 * 复制
