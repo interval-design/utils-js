@@ -5,7 +5,7 @@
  */
 import { escapeRe, convert } from './util';
 
-// 实践类
+// 时间类
 const Time = {
 	/** 当前时间到传入时间的倒计时
 	 * @param time
@@ -50,8 +50,8 @@ const Time = {
 		}
 	},
 	/** 日期格式化
- * @param {String} time 
- * @param {String} format 
+ * @param {String} time
+ * @param {String} format
  */
 	format(time, format) {
 		if (!time) {
@@ -77,7 +77,7 @@ const Time = {
 		return time_str;
 	},
 	/** 距离当前时间
- * @param {String} time 
+ * @param {String} time
  */
 	formTheCurrentTime(time) {
 		// 处理传入时间，兼容iOS
@@ -234,10 +234,10 @@ const Char = {
 const Cookies = {
 		/**
 		 * 设置cookies
-		 * @param {*} key 
-		 * @param {*} value 
-		 * @param {*} encoder 
-		 * @param {*} options 
+		 * @param {*} key
+		 * @param {*} value
+		 * @param {*} encoder
+		 * @param {*} options
 		 */
 		set(key, value, encoder = encodeURIComponent, options) {
 			if (typeof encoder === 'object' && encoder !== null) {
@@ -356,15 +356,15 @@ const Utils = {
 	* @param action {function}  请求关联函数，实际应用需要调用的函数
 	* @return {function}    返回客户调用函数
 	*/
-	throttle(delay, action){ 
+	throttle(delay, action){
   	let  last = 0
-		return function(){ 
+		return function(){
 			let curr = +new Date()
-			if (curr - last > delay){ 
+			if (curr - last > delay){
 				action.apply(this, arguments)
 				last = curr
 			}
-		} 
+		}
 	},
 
 	/**
@@ -374,35 +374,55 @@ const Utils = {
 	* @return {function}    返回客户调用函数
 	*/
 	debounce(idle,action){
-		let last; 
-		return function(){ 
+		let last;
+		return function(){
 			let ctx = this
 			let args = arguments
-			clearTimeout(last); 
-			last = setTimeout(()=>{ 
-				action.apply(ctx, args) // 延迟idle毫秒后 执行action }, idle); 
+			clearTimeout(last);
+			last = setTimeout(()=>{
+				action.apply(ctx, args) // 延迟idle毫秒后 执行action }, idle);
 			},idle)
 		}
 	},
-	
+
 	/**
 	下载base64格式文件
 	* @param {*} b64 - b64文件编码
 	* @param {String} file_name - 命名的名称
 	*/
 	downloadBase64Img(b64, file_name){
-		// 创建隐藏的可下载链接
-		let eleLink = document.createElement('a')
+    async downloadBase64Img(b64, file_name){
+      const userAgent = navigator.userAgent
+      const myBrowser = () => {
+        if (userAgent.indexOf('Trident') > -1) {
+          return 'IE'
+        } // 判断是否IE浏览器
+        if (userAgent.indexOf('Edge') > -1) {
+          return 'Edge'
+        }
+        return ''
+      }
+      const eleLink = document.createElement('a')
 
-		eleLink.download = file_name
-		eleLink.style.display = 'none'
-		eleLink.href = b64
-		eleLink.click()
+      eleLink.download = file_name
+      eleLink.style.display = 'none'
+      if (myBrowser() === 'IE' || myBrowser() === 'Edge') {
+        eleLink.href = '#'
+        await fetch(b64).then((res) =>
+          res.blob().then((blob) => {
+            window.navigator.msSaveOrOpenBlob(blob, file_name)
+          })
+        )
+      } else {
+        eleLink.href = b64
+        eleLink.click()
+      }
+    },
 	},
 
 	/**
 	 * 复制
-	 * @param {*} param0 
+	 * @param {*} param0
 	 */
 	copy({content = '', success = Function }) {
 		const input = document.createElement('input')
@@ -419,7 +439,9 @@ const Utils = {
 			success()
 		}
 		document.body.removeChild(input)
-  }
+  },
+
+	// TODO:增加一个自动对焦方法
 }
 
 class PDo {
