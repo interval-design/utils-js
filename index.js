@@ -391,6 +391,7 @@ const Utils = {
 	* @param {String} file_name - 命名的名称
 	*/
   async downloadBase64Img(b64, file_name){
+		const formatName = file_name.replace('.','_')
     const userAgent = navigator.userAgent
     const myBrowser = () => {
       if (userAgent.indexOf('Trident') > -1) {
@@ -403,13 +404,13 @@ const Utils = {
     }
     const eleLink = document.createElement('a')
 
-    eleLink.download = file_name
+    eleLink.download = formatName
     eleLink.style.display = 'none'
     if (myBrowser() === 'IE' || myBrowser() === 'Edge') {
       eleLink.href = '#'
       await fetch(b64).then((res) =>
         res.blob().then((blob) => {
-          window.navigator.msSaveOrOpenBlob(blob, file_name)
+          window.navigator.msSaveOrOpenBlob(blob, formatName)
         })
       )
     } else {
