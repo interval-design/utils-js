@@ -58,7 +58,12 @@ const Time = {
 			return '-';
 		}
 		let _format = format || 'y/m/d h:i:s';
-		let _date = time ? new Date(time.split('-').join('/').split('T').join(' ')) : new Date();
+		let _date = new Date();
+		if (time instanceof Date) {
+			_date = time
+		} else {
+			_date = time ? new Date(time.split('-').join('/').split('T').join(' ')) : new Date();
+		}
 		let formatObj = {
 			y: _date.getFullYear(),
 			m: _date.getMonth() + 1,
