@@ -1,6 +1,6 @@
 {
   "name": "PDo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "常用工具包",
   "main": "index.js",
   "scripts": {
